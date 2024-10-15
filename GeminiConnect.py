@@ -3,3 +3,21 @@ from flask_cors import CORS
 import creds
 import textwrap, os
 import google.generativeai as genai
+
+my_api_key= cred.api_key
+genai.configure(api_key=my_api_key)
+model = genai.GenerativeModel('gemini-pro')
+
+app = Flask(__name__)
+CORS(app)
+
+def generate_playlist(prompt):
+    
+    try:
+        response=model.generate_content(prompt)
+        generated_text=response.text
+        
+        return generated_text
+    except Exception as e:
+        print("Error fetching calculation:{e}")
+        return jsonify("Error fetching calculations")
