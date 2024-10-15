@@ -4,7 +4,7 @@ import creds
 import textwrap, os
 import google.generativeai as genai
 
-my_api_key= cred.api_key
+my_api_key= creds.gemini_api_key
 genai.configure(api_key=my_api_key)
 model = genai.GenerativeModel('gemini-pro')
 
@@ -19,5 +19,4 @@ def generate_playlist(prompt):
         
         return generated_text
     except Exception as e:
-        print("Error fetching calculation:{e}")
-        return jsonify("Error fetching calculations")
+        return "Error fetching calculations:{e}"
