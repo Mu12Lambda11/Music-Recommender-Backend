@@ -1,5 +1,6 @@
 
-
+#@return String:complete_prompt
+#Asks for user input, then uses all user input to generate a complete prompt to send to Gemini API
 def questionnaire():
     
     artists_input =[]

@@ -10,7 +10,8 @@ model = genai.GenerativeModel('gemini-pro')
 
 app = Flask(__name__)
 CORS(app)
-
+#@param String:prompt
+# Generates a string response (a playlist in this case), based on the input prompt.
 def generate_playlist(prompt):
     
     try:
