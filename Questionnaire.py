@@ -17,7 +17,9 @@ def questionnaire():
     
     print("Awesome. Just hang on while we generate results.")
     
-    complete_prompt= """Use the following information to produce a spotify-based playlist of recommended music:
+    complete_prompt= """Use the following information to produce a spotify-based playlist of recommended music.
+            Do not include a title for the playlist, include only the songs.
+            Format the songs as following without deviation:  Title ### Artist (Year)
             Music artists I like include %s, %s, and %s. 
             I like %s, %s, and %s. 
             I want to listen to music in/at %s. 

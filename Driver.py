@@ -13,7 +13,10 @@ def main():
     if user_input==1:
         prompt=Questionnaire.questionnaire()
         
-    print(useGemini(prompt))
+    response = useGemini(prompt)
+    print(response)
+    
+    useSpotify(response)
 
 #@param String:prompt
 #@return String: GeminiConnect.generate_playlist
@@ -28,12 +31,13 @@ def useGemini(prompt):
 def useSpotify(song_list):
     songs=[]
     for line in song_list.strip().split('\n'):
-        title, rest = line.split('-')
+        title, rest = line.split('###')
         artist, year= rest.split('(')
         year = year.rstrip(')')
-        songs.append({'title': title, "artist": artist, "year": year})
+        songs.append({'artist': artist, "title": title, "year": year})
     
-    SpotifyConnect.search_songs(songs)
+    spotify_connect = SpotifyConnect.SpotifyConnect()
+    spotify_connect.search_songs(songs)
     
 if __name__ == "__main__":
     main()
