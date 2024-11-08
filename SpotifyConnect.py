@@ -43,6 +43,33 @@ class SpotifyConnect:
         user_id = self.sp.current_user()['id']
         playlist = self.sp.user_playlist_create(user=user_id, name="Generated Playlist", public=True)
         self.sp.playlist_add_items(playlist_id=playlist['id'], items=song_uris)
+    
+    def get_playlists(self):
+        playlists=self.sp.current_user_playlists()
+        playlists_info = [(pl['name'], pl['external_urls']['spotify']) for pl in playlists['items']]
+
+        return playlists_info
+    
+    def get_playlist_tracks(self, playlist_id):
+        results=self.sp.playlist_tracks(playlist_id)
+        tracks = [f"{track['track']['name']} by {track['track']['artists'][0]['name']}" for track in results['items']]
+        return tracks
+    
+    def get_user_playlist(self):
+        user_playlists=self.get_playlists()
+
+        user_input = input("Enter the name of the playlist in your library")
+        matched_playlist = next((pl for pl in user_playlists if user_input.lower() in pl[0].lower()), None)
+
+        if matched_playlist:
+            playlist_url= matched_playlist[1]
+            playlist_id= playlist_url.split('/')[-1]
+            songs=self.get_playlist_tracks(playlist_id)
+            return songs
+        else:
+            return "No matching playlist found"
+
+
 
     
     

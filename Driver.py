@@ -1,4 +1,5 @@
 import Questionnaire
+import PlaylistRec
 import GeminiConnect
 import SpotifyConnect
 
@@ -6,17 +7,33 @@ import SpotifyConnect
 #then prompt Gemini API for a playlist, then prompt Spotify API to generate the playlist
 #to the user's account
 def main():
+    #Initialize SpotifyConnect object
+    my_spotify = SpotifyConnect.SpotifyConnect()
+
     user_input = int(input("Please enter a number: 1. Questionnaire, 2. Playlist , 3. Artist, 4. Spotify Account \n"))
     
     prompt=""
     
+    #Questionnaire case
     if user_input==1:
         prompt=Questionnaire.questionnaire()
+    #Playlist case
+    elif user_input==2:
+        playlist_tracks=my_spotify.get_user_playlist()
+
+        prompt=PlaylistRec.playlist_rec(playlist_tracks)
+    #Artist case
+    elif user_input==3:
+        print("Artist recommend in development")
+    #Account case
+    elif user_input==4:
+        print("Account recommend in development")
+
         
     response = useGemini(prompt)
     print(response)
     
-    useSpotify(response)
+    useSpotify(response,my_spotify)
 
 #@param String:prompt
 #@return String: GeminiConnect.generate_playlist
@@ -28,7 +45,7 @@ def useGemini(prompt):
 #Used to parse through the Gemini generated string of songs to create an array of songs
 #specifying title, artist, and year. Afterwards, use Spotify API to search for the songs
 #and generate a playlist on the account.
-def useSpotify(song_list):
+def useSpotify(song_list,my_spotify):
     songs=[]
     for line in song_list.strip().split('\n'):
         title, rest = line.split('###')
@@ -36,8 +53,7 @@ def useSpotify(song_list):
         year = year.rstrip(')')
         songs.append({'artist': artist, "title": title, "year": year})
     
-    spotify_connect = SpotifyConnect.SpotifyConnect()
-    spotify_connect.search_songs(songs)
+    my_spotify.search_songs(songs)
     
 if __name__ == "__main__":
     main()
