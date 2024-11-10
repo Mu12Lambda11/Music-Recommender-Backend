@@ -1,5 +1,7 @@
 import spotipy
 import creds
+#Used to parse special characters in spotify song search
+from urllib.parse import quote
 from spotipy.oauth2 import SpotifyOAuth
 
 class SpotifyConnect:
@@ -31,7 +33,7 @@ class SpotifyConnect:
         self.check_and_refresh_token()  # Ensure token is valid before making requests
         song_uris = []
         for song in songs_array:
-            query = f"artist:{song['artist']}track:{song['title']}"
+            query = quote(f"{song['artist']} {song['title']}")
             print(f"Query: {query}")  # Print the query
             result = self.sp.search(q=query, type='track', limit=1)
             print(f"Result: {result}")
