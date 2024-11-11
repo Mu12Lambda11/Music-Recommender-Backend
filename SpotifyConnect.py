@@ -33,23 +33,31 @@ class SpotifyConnect:
         self.check_and_refresh_token()  # Ensure token is valid before making requests
         song_uris = []
         for song in songs_array:
-            query = quote(f"{song['artist']} {song['title']} year:{song['year']}")
+            query = quote(f"{song['artist']} {song['title']}")
             #Used to verification. Take out on release.
             #print(f"Query: {query}")  # Print the query
             
-            result = self.sp.search(q=query, type='track', limit=1)
+            result = self.sp.search(q=query, type='track', limit=10)
             #Used to verification. Take out on release.
             #print(f"Result: {result}")
             
             if result['tracks']['items']:
-                song_uris.append(result['tracks']['items'][0]['uri'])
-            else:
-                print(f"No results found for {song['title']} - {song['artist']} ({song['year']})")
+                # Filter results by album and year if provided
+                filtered_tracks = [
+                track for track in result['tracks']['items']
+                if (song['album'].lower() in track['album']['name'].lower() if song['album'] else True) and
+                   (str(song['year']) in track['album']['release_date'] if song['year'] else True)
+                ]
+                if filtered_tracks:
+                    song_uris.append(result['tracks']['items'][0]['uri'])
+                else:
+                    print(f"No results found for {song['title']} - {song['artist']} ({song['year']})")
         
         user_id = self.sp.current_user()['id']
         user_playlist_name=input("Please enter in a name for the finished playlist.")
         playlist = self.sp.user_playlist_create(user=user_id, name=user_playlist_name, public=True)
         self.sp.playlist_add_items(playlist_id=playlist['id'], items=song_uris)
+        print("Playlist has been generated! Check Spotify!")
     
     def get_playlists(self):
         playlists=self.sp.current_user_playlists()

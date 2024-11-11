@@ -15,11 +15,15 @@ def questionnaire():
     time_input = input("What’s your favorite decade in music?") 
     age_input = input("Great taste! Finally, would you like your music to be filled with older music, newer music, or a mix of both?")
     
+    if("mix" in age_input or "both" ):
+        age_input="older and newer"
+        
+    
     print("Awesome. Just hang on while we generate results.")
     
     complete_prompt= """Use the following information to produce a spotify-based playlist of recommended music.
             Do not include a title for the playlist, include only the songs.
-            Format the songs as following without deviation: Title ### Artist (Year)
+            Format the songs as following without deviation: Title /// Album ### Artist (Year)
             Music artists I like include %s, %s, and %s. 
             I like %s, %s, and %s. 
             I want to listen to music in/at %s. 

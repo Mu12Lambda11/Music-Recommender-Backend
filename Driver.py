@@ -1,5 +1,6 @@
 import Questionnaire
 import PlaylistRec
+import ArtistRec
 import GeminiConnect
 import SpotifyConnect
 
@@ -24,10 +25,10 @@ def main():
         prompt=PlaylistRec.playlist_rec(playlist_tracks)
     #Artist case
     elif user_input==3:
-        print("Artist recommend in development")
+        prompt=ArtistRec.artist_rec()
     #Account case
     elif user_input==4:
-        print("Account recommend in development")
+        print("Account reccommend in development")
 
         
     response = useGemini(prompt)
@@ -48,10 +49,11 @@ def useGemini(prompt):
 def useSpotify(song_list,my_spotify):
     songs=[]
     for line in song_list.strip().split('\n'):
-        title, rest = line.split('###')
-        artist, year= rest.split('(')
+        title, rest = line.split(' /// ')
+        album, rest = rest.split(' ### ')
+        artist, year = rest.split(' (')
         year = year.rstrip(')')
-        songs.append({'artist': artist, "title": title, "year": year})
+        songs.append({'artist': artist, "title": title, "album":album, "year": year})
     
     my_spotify.search_songs(songs)
     
