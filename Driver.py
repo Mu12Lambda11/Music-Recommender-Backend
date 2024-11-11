@@ -31,9 +31,8 @@ def main():
     #Account case
     elif user_input==4:
         top_artists=my_spotify.get_user_top_artists()
-        top_tracks=my_spotify.get_user_top_tracks()
         
-        prompt=AccountRec.account_rec(top_artists,top_tracks)
+        prompt=AccountRec.account_rec(top_artists)
     #Logout case
     elif user_input==5:
         logout_user()
