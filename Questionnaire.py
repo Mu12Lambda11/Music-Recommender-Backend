@@ -15,7 +15,7 @@ def questionnaire():
     time_input = input("What’s your favorite decade in music?") 
     age_input = input("Great taste! Finally, would you like your music to be filled with older music, newer music, or a mix of both?")
     
-    if("mix" in age_input or "both" ):
+    if("mix" in age_input or "both" in age_input):
         age_input="older and newer"
         
     
